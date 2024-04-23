@@ -23,14 +23,6 @@ const Layout = (props) => {
       <div className="flex">
           <NewSidebar />
           <Header />
-
-        {/*<div className={`content-wrapper ${props?.bgClass}`}>*/}
-        {/*  /!* <Breadcrumb /> *!/*/}
-        {/*  /!* <div style={{ paddingTop: "30px" }}></div> *!/*/}
-        {/*  /!*<section className="content px-3 !pt-6">{props?.children}</section>*!/*/}
-        {/*</div>*/}
-        {/* //<Footer /> */}
-        {/*<div id="sidebar-overlay" onClick={(e) => closeSidebar(e)}></div>*/}
       </div>
     </>
   );

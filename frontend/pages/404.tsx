@@ -13,7 +13,7 @@ export default function NotFoundPage() {
                         <h1 className={notFoundStyle.number}><span>4</span><span>0</span><span>4</span></h1>
                     </div>
                     <h2 className={notFoundStyle.title_two}>we are sorry, but the page you requested was not found</h2>
-                    <Link href={`/start/dashboard`}><Button variant={'gradient'}>Back to home page</Button></Link>
+                    <Link href={`/`}><Button variant={'gradient'}>Back to home page</Button></Link>
                 </div>
             </div>
         </>

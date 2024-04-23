@@ -4,10 +4,10 @@ function SEO() {
 
     return (
         <Head>
-            <title>MindMatrix</title>
-            <meta name="description" content="MindMatrix" />
+            <title>SmartBanking</title>
+            <meta name="description" content="SmartBanking" />
             <meta charSet="utf-8" />
-            <link rel="icon" href={`/assets/template/dist/img/Setting.png`} />
+            <link rel="icon" href={`icons8-smart-30.png`} />
 
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
             <link rel="stylesheet" href={`/assets/template/dist/css/adminlte.min.css`} />
