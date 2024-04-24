@@ -25,9 +25,8 @@ import select = Simulate.select;
  */
 
 const userTypes = [
-    {value: 'normal', label: 'User'},
-    {value: 'producer', label: 'Local producer'},
-    {value: 'partner', label: 'Partner'},
+    {value: 'normal', label: 'Persoană fizică'},
+    {value: 'producer', label: 'Persoană juridică'},
 ]
 
 export default function LoginPage() {
