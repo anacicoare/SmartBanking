@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class NormalUser(models.Model):
     email = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
+    password = models.CharField(max_length=255, default="")
 
     def __str__(self):
         return self.email
@@ -13,6 +14,7 @@ class NormalUser(models.Model):
 class ProducerUser(models.Model):
     email = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
+    password = models.CharField(max_length=255, default="")
 
     def __str__(self):
         return self.email
@@ -21,6 +23,7 @@ class ProducerUser(models.Model):
 class PartnerUser(models.Model):
     email = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
+    password = models.CharField(max_length=255, default="")
 
     def __str__(self):
         return self.email
