@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,7 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
 
 INSTALLED_APPS = [
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'proj_backend',
     'corsheaders',
+    'rest_framework_simplejwt',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -86,9 +90,9 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'smarthack',
+        'NAME': 'smartbanking',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'Iulia#2020',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -111,6 +115,8 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+AUTH_USER_MODEL = 'proj_backend.UserData'
 
 
 # Internationalization
