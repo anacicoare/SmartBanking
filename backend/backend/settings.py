@@ -118,6 +118,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'proj_backend.UserData'
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "TOKEN_OBTAIN_SERIALIZER": "proj_backend.serializers.MyTokenObtainPairSerializer",
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

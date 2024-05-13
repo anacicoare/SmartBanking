@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from proj_backend.models import PartnerUser, ProducerUser
 from proj_backend.serializers import MyTokenObtainPairSerializer, UserSerializer
 
 
@@ -46,4 +45,4 @@ class RegisterView(APIView):
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    _serializer_class = MyTokenObtainPairSerializer
+    serializer_class = MyTokenObtainPairSerializer

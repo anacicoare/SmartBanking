@@ -8,28 +8,24 @@ from proj_backend.models import UserData
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    # # Ensure the field is explicitly declared for receiving input
-    # email = serializers.EmailField()
-
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
 
         # Add custom claims
-        # token['username'] = user.username
+        token['name'] = user.name
+        token['email'] = user.email
+        token['type'] = user.type
         # ...
-    #
-    def validate(self, attrs):
-        # Override the credentials handling to use 'email' instead of 'username'
-        attrs['email'] = attrs.get('email')
-        return super().validate(attrs)
+
+        return token
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = UserData
-        fields = ["id", "email", "name", "password"]
+        fields = ["id", "email", "name", "password", "type"]
 
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
