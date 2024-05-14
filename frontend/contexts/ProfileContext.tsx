@@ -3,6 +3,7 @@ import { createContext, useState, useEffect } from 'react';
 import Cookies from "js-cookie";
 import { useRouter } from 'next/router';
 import { notifications } from '@mantine/notifications';
+import jwtDecode from "jwt-decode";
 
 type ProfileContextProps = {
     authorized: boolean;
@@ -62,15 +63,15 @@ export const ProfileProvider = ({ children }: any) => {
                 const dataResponse = response?.data;
                 //If the authentication succeeds, update the state with the user's profile
                 localStorage.setItem('profile', dataResponse);
-
+                const decodedData = jwtDecode(dataResponse?.access);
                 setProfile({
-                    email: dataResponse?.email,
-                    name: dataResponse?.name,
-                    user_type: dataResponse?.user_type,
+                    email: decodedData?.email,
+                    name: decodedData?.name,
+                    user_type: decodedData?.type,
                 })
                 setAuthorized(true);
 
-                if(dataResponse?.user_type === 'normal') {
+                if(decodedData?.type === 'normal') {
                     router.push('/dashboard');
                 }
 
