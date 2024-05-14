@@ -1,6 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, Group, Permission
 
+# Create your models here.
+
+
+class Card(models.Model):
+    card_number = models.CharField(max_length=16)
+    iban = models.CharField(max_length=24, unique=True)
+    expiration_date = models.DateField()
+    cvv = models.CharField(max_length=3)
+    balance = models.FloatField(default=0)
+    is_blocked = models.BooleanField(default=False)
+    type = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.card_number
+    
+
+
 
 class UserManager(BaseUserManager):
     use_in_migration = True
@@ -62,18 +79,3 @@ class UserData(AbstractUser):
         return self.name
 
 
-
-class ProducerUser(models.Model):
-    email = models.CharField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.email
-
-
-class PartnerUser(models.Model):
-    email = models.CharField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.email

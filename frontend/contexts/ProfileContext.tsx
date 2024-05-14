@@ -85,7 +85,7 @@ export const ProfileProvider = ({ children }: any) => {
                 console.log(error?.response?.data);
                 notifications.show({
                     title: 'Error',
-                    message: error?.response?.data,
+                    message: 'Email sau parola incorecte',
                     color: 'red',
                     withBorder: true,
                     styles: (theme) => ({

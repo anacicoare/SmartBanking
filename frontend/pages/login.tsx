@@ -15,7 +15,7 @@ import { useForm } from '@mantine/form';
 import {useContext, useState} from 'react';
 import { ProfileContext } from '@/contexts/ProfileContext';
 import { useRouter } from 'next/router';
-import bg from '../public/login-bg.jpg';
+import bg from '../public/startpage_bg.jpg';
 
 /**
  * Login page
@@ -23,9 +23,8 @@ import bg from '../public/login-bg.jpg';
  */
 
 const userTypes = [
-    {value: 'normal', label: 'User'},
-    {value: 'producer', label: 'Local producer'},
-    {value: 'partner', label: 'Partner'},
+    {value: 'normal', label: 'Persoană fizică'},
+    {value: 'producer', label: 'Persoană juridică'},
 ]
 
 export default function LoginPage() {
@@ -65,36 +64,40 @@ export default function LoginPage() {
             className='flex justify-center items-stretch position-absolute bg-cover bg-center bg-no-repeat w-screen h-screen'
             style={{backgroundImage: `url(${bg.src})`}}>
             <Box className='w-3/5 position-absolutess mt-10'>
-                <Container size={420} my={40}>
-                    <Paper withBorder shadow="md" p={20} mt={30} radius="md">
+                <Container size={450} my={40}>
+                    <Paper withBorder shadow="md" p={30} mt={10} radius="md">
+                        <h1>Intră în cont</h1>
                         <form noValidate onSubmit={form.onSubmit(handleSubmit)}>
                             <TextInput
                                 autoFocus
-                                className={'mt-14'}
+                                className={'mt-3'}
                                 name='email'
                                 label="Email"
                                 placeholder="example@domain.com"
                                 required {...form.getInputProps('email')}
                             />
                             <PasswordInput
-                                label="Password"
+                                label="Parolă"
                                 name='password'
                                 placeholder="Enter password"
                                 required {...form.getInputProps('password')}
                                 mt="md" />
                             <Select
                                 data={userTypes}
-                                label="User type"
-                                placeholder="Select user type"
+                                label="Utilizator"
+                                placeholder="Selectează tipul utilizatorului"
                                 value={selectedUserType}
                                 onChange={(value: any) => setSelectedUserType(value)}
                                 mt="md"
                             />
-                            <Button  variant="gradient" gradient={{ from: 'rgba(104, 152, 242, 1)', to: 'pink', deg: 196 }} type='submit' fullWidth mt="xl">
-                                Login
+                            <Button variant="filled" color={'indigo.4'} type='submit' fullWidth mt="xl">
+                                Confirm
                             </Button>
                             <Link href={'/register'}>
-                                <Text className="-mb-3" size="sm" align="center" mt="md" variant="link">Don't have an account? Register now!</Text>
+                                <Text className="-mb-3" size="sm" align="center" mt="md" variant="link">Nu ai încă un cont? Înregistrează-te aici</Text>
+                            </Link>
+                            <Link href={'/'}>
+                                <Text className="-mb-3" size="sm" align="center" mt="md" variant="link">Întoarce-te la pagina principală</Text>
                             </Link>
                         </form>
                     </Paper>
