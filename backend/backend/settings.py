@@ -92,7 +92,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'smartbanking',
         'USER': 'root',
-        'PASSWORD': 'Iulia#2020',
+        'PASSWORD': 'student',
         'HOST': 'localhost',
         'PORT': '3306',
     }
