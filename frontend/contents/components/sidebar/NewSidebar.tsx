@@ -38,6 +38,44 @@ export default function NewSidebar() {
                 />
                 {active == 0 && <div className='mt-20 bg-blue-900 w-0.5'></div>}
             </div>
+            <div className='flex flex-row'>
+                <NavLink
+                    onClick={() => setActive(1)}
+                    active={active === 1}
+                    label="Transferuri"
+                    icon={<IconCategory/>}
+                    color='indigo.8'
+                    styles={(theme) => {
+                        return {
+                            label: {
+                                color: colors.black,
+                                fontSize: '1rem',
+                                fontWeight: active === 1 && '600'
+                            }
+                        }
+                    }}
+                />
+                {active == 1 && <div className='bg-blue-900 w-0.5'></div>}
+            </div>
+            <div className='flex flex-row'>
+                <NavLink
+                    onClick={() => setActive(2)}
+                    active={active === 2}
+                    label="Rapoarte"
+                    icon={<IconCategory/>}
+                    color='indigo.8'
+                    styles={(theme) => {
+                        return {
+                            label: {
+                                color: colors.black,
+                                fontSize: '1rem',
+                                fontWeight: active === 2 && '600'
+                            }
+                        }
+                    }}
+                />
+                {active == 2 && <div className='bg-blue-900 w-0.5'></div>}
+            </div>
 
             <div className='flex flex-row mt-[100px]'>
                 <NavLink
