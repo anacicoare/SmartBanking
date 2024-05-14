@@ -23,5 +23,7 @@ urlpatterns = [
     path("api/register/", views.Register.as_view(), name="register"),
     path("api/login/", views.Login.as_view(), name="login"),
     path('api/test/', views.Test.as_view(), name='test'),
+    path('api/transfer/', views.TransferView.as_view(), name='transfer'),
+    path('api/card/', views.CardView.as_view(), name='card'),
 ]
 
