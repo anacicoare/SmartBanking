@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from proj_backend.serializers import MyTokenObtainPairSerializer, UserSerializer
 
 
-from proj_backend.models import PartnerUser, ProducerUser, NormalUser, Card, Transfer
+from proj_backend.models import Card, Transfer
 
 class Test(APIView):
     def get(self, request):
@@ -21,29 +21,36 @@ class RegisterView(APIView):
         return Response(serializer.data)
 
 
-# class Register(APIView):
-#     queryset = NormalUser.objects.all()
-#     permission_classes = (AllowAny,)
-#     serializer_class = RegisterSerializer
-#     def post(self, request):
-#         email = request.data.get('email')
-#         name = request.data.get('name')
-#         password = request.data.get('password')
-#         user_type = request.data.get('user_type')
-#
-#         if user_type == 'normal':
-#             user = NormalUser(email=email, name=name, password=password)
-#         elif user_type == 'producer':
-#             user = ProducerUser(email=email, name=name, password=password)
-#         elif user_type == 'partner':
-#             user = PartnerUser(email=email, name=name, password=password)
-#         else:
-#             return Response(status=400)
-#
-#         user.save()
-#
-#         return Response(data={"created user successfully"},status=200)
-
-
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+class TransferView(APIView):
+    def post(self, request):
+        amount = request.data.get('amount')
+        details = request.data.get('details')
+        sender = request.data.get('sender')
+
+        receiver = request.data.get('receiver')
+        iban = request.data.get('iban')
+        iban_sender = request.data.get('iban_sender')
+
+        # check if sender has enough money
+        sender_card = Card.objects.get(iban=iban_sender)
+        if sender_card.balance < amount:
+            return Response(data={"insufficient balance"}, status=403)
+
+        # transfer money
+        sender_card.balance -= amount
+        sender_card.save()
+
+        # update receiver balance
+        receiver_card = Card.objects.get(iban=iban)
+        receiver_card.balance += amount
+        receiver_card.save()
+
+        # save transfer
+        transfer = Transfer(amount=amount, details=details, sender=sender, receiver=receiver, iban=iban, iban_sender=iban_sender)
+        transfer.save()
+
+        return Response(data={"transfered successfully"}, status=200)

@@ -5,6 +5,28 @@ from django.core.validators import RegexValidator
 
 # Create your models here.
 
+class Transfer(models.Model):
+    amount = models.FloatField()
+    details = models.CharField(max_length=255)
+    sender = models.CharField(max_length=255)
+    receiver = models.CharField(max_length=255)
+    iban_sender = models.CharField(max_length=34, validators=[RegexValidator(
+        regex=r'^[A-Z]{2}\d{2}[A-Z\d]{1,30}$',
+        message='IBAN must be in valid format.',
+        code='invalid_iban'
+    )
+    ])
+    iban = models.CharField(max_length=34, validators=[RegexValidator(
+        regex=r'^[A-Z]{2}\d{2}[A-Z\d]{1,30}$',
+        message='IBAN must be in valid format.',
+        code='invalid_iban'
+    )
+    ])
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.sender} -> {self.receiver} : {self.amount}'
+    
 
 class Card(models.Model):
     card_number = models.CharField(max_length=16)
@@ -54,6 +76,7 @@ class UserData(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     type = models.CharField(max_length=100, default='normal')
+    cards = models.ManyToManyField(Card)
 
     groups = models.ManyToManyField(
         Group,
