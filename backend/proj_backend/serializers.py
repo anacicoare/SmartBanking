@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from proj_backend.models import UserData
+from proj_backend.models import UserData, Card
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -30,3 +30,9 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
         return super(UserSerializer, self).create(validated_data)
+
+
+class CardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Card
+        fields = ["id", "name", "card_number", "iban", "expiration_date", "cvv", "balance", "is_blocked", "type"]
