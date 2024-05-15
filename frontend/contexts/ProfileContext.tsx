@@ -38,16 +38,18 @@ export const ProfileProvider = ({ children }: any) => {
      */
     const getUserProfile = () => {
         const profile: any = localStorage.getItem('profile');
-        const accessToken = "";
+
+        const decodedData = jwtDecode(profile);
+
         //Case not authenticated
-        if (!accessToken) {
+        if (!profile) {
             setAuthorized(false)
         } else {
             //Case have accessToken
             setProfile({
-                email: profile?.email,
-                name: profile?.name,
-                user_type: profile?.user_type,
+                email: decodedData?.email,
+                name: decodedData?.name,
+                user_type: decodedData?.user_type,
             })
 
             //Case logged in
@@ -62,7 +64,6 @@ export const ProfileProvider = ({ children }: any) => {
             if (response && response?.data) {
                 const dataResponse = response?.data;
                 //If the authentication succeeds, update the state with the user's profile
-                localStorage.setItem('profile', dataResponse);
                 const decodedData = jwtDecode(dataResponse?.access);
                 setProfile({
                     email: decodedData?.email,
@@ -70,12 +71,13 @@ export const ProfileProvider = ({ children }: any) => {
                     user_type: decodedData?.type,
                 })
                 setAuthorized(true);
+                localStorage.setItem('profile', dataResponse?.access);
 
                 if(decodedData?.type === 'normal') {
                     router.push('/dashboard');
                 }
 
-                console.log("login success");
+                console.log("decodedData", decodedData);
             } else {
                 console.log("login failed");
                 setAuthorized(false);

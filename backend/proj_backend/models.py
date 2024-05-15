@@ -29,8 +29,9 @@ class Transfer(models.Model):
     
 
 class Card(models.Model):
-    card_number = models.CharField(max_length=16)
-    iban = models.CharField(max_length=34, unique=True)
+    name = models.CharField(max_length=255)
+    card_number = models.CharField(max_length=255)
+    iban = models.CharField(max_length=255, unique=True)
     expiration_date = models.DateField()
     cvv = models.CharField(max_length=3)
     balance = models.FloatField(default=0)

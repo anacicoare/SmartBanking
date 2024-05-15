@@ -2,11 +2,11 @@ import axiosInstance from "../axiosInstance";
 
 export const CardServices = {
     //Get project members
-    callApiGetCards: () => {
-        return axiosInstance.get("/cards/");
+    callApiGetCards: (email: any) => {
+        return axiosInstance.get(`/my_cards/?email=${email}`);
     },
 
     callApiCreateCard: (data: any) => {
-        return axiosInstance.post("/cards/", data)
+        return axiosInstance.post("/add_card/", data)
     },
 }

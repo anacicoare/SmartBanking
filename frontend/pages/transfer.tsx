@@ -134,7 +134,8 @@ export default function TransferPage() {
 
     return (
         <React.Fragment>
-            {/*<Layout>*/}
+            <Layout />
+            <div className='absolute left-[18%] top-[7%] mt-7 w-[82%]'>
             <Container className="form-container" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Box className='w-1/2 position-absolutess m-5'>
                     <Card withBorder shadow="xl" p={20} mt={30} radius="md">
@@ -188,6 +189,7 @@ export default function TransferPage() {
                 {/* Add image */}
                 <Image className={"m-10 mt-15"} src={'/transfer_bani.svg'} alt={'transfer'} style={{ width: "45%"}} />
             </Container>
+            </div>
             {/*</Layout>*/}
         </React.Fragment>
     );

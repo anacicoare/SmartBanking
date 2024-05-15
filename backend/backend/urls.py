@@ -27,5 +27,7 @@ urlpatterns = [
     path('api/test/', views.Test.as_view(), name='test'),
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/transfer/', views.TransferView.as_view(), name='transfer'),
+    path('api/add_card/', views.AddCard.as_view(), name='add_card'),
+    path('api/my_cards/', views.MyCards.as_view(), name='add_card'),
 ]
 
