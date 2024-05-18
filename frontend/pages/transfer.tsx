@@ -11,27 +11,39 @@ import { CardServices } from "@/services/cards/cardservices";
 
 export default function TransferPage() {
     const router = useRouter();
-    const { profile } = useContext(ProfileContext);
+    const profile = useContext(ProfileContext);
     const [selectedCard, setSelectedCard] = useState<any>('');
     const [cards, setCards] = useState<any>([]);
 
+    useEffect(() => {
+        console.log('here')
+        const profile: any = localStorage.getItem('profile');
+        if (!profile) {
+            console.log('no access token')
+            router?.push('/login');
+        } else {
+            console.log('have access token')
+            console.log(profile?.profile?.email);
+        }
+    }, [profile, router]);
+
     // get request from backend to get user's cards
     useEffect(() => {
-        fetchCards();
-    }, []);
+        if(profile?.profile?.email != undefined) {
+            console.log("call api get cards...");
+            CardServices.callApiGetCards(profile?.profile?.email).then((response: any) => {
+                if (response && response?.data) {
+                    setCards(response?.data.cards);
+                    console.log("get cards success");
+                } else {
+                    console.log("get cards failed");
+                }
+            }).catch((error: any) => {
+                console.error(error);
+            })
+        }
+    }, [profile?.profile?.email]);
 
-    const fetchCards = () => {
-        CardServices.callApiGetCards().then((response: any) => {
-            if (response && response?.data) {
-                setCards(response?.data);
-                console.log("get cards success");
-            } else {
-                console.log("get cards failed");
-            }
-        }).catch((error: any) => {
-            console.error(error);
-        })
-    }
 
     const form = useForm({
         initialValues: { amount: '', details: '', iban: '', receiver: '' },
@@ -57,7 +69,7 @@ export default function TransferPage() {
                 if (!value) {
                     return 'IBAN-ul este necesar';
                 }
-                if (value !== '' && !value.match(/^[A-Z]{2}\d{2}[A-Z\d]{1,30}$/)) {
+                if (value == '' && !value.match(/^[A-Z]{2}\d{2}[A-Z\d]{1,30}$/)) {
                     return 'Introduceți un IBAN valid';
                 }
                 return null;
@@ -72,11 +84,13 @@ export default function TransferPage() {
     });
 
     const handleSubmit = (values: any) => {
-        const data = { amount: values?.amount, details: values?.details, iban: values?.iban, receiver: values?.receiver, iban_sender: selectedCard?.iban, sender: profile?.name };
+        const data = { amount: values?.amount, details: values?.details, iban: values?.iban,
+            receiver: values?.receiver, iban_sender: selectedCard, sender: profile?.profile?.name };
         console.log("call api transfer...");
         TransferServices.callApiTransfer(data).then((response: any) => {
             if (response && response?.data) {
                 console.log("transfer success");
+                router.push('/dashboard');
                 notifications.show({
                     title: 'Succes',
                     message: 'Transfer realizat cu succes',
@@ -100,6 +114,29 @@ export default function TransferPage() {
                 })
             } else {
                 console.log("transfer failed");
+                notifications.show(
+                    {
+                        title: 'Error',
+                        message: 'Transfer eșuat',
+                        color: 'red',
+                        withBorder: true,
+                        styles: (theme) => ({
+                            root: {
+                                backgroundColor: theme.colors.red[6],
+                                borderColor: theme.colors.red[6],
+
+                                '&::before': { backgroundColor: theme.white },
+                            },
+
+                            title: { color: theme.white },
+                            description: { color: theme.white },
+                            closeButton: {
+                                color: theme.white,
+                                '&:hover': { backgroundColor: theme.colors.blue[7] },
+                            },
+                        }),
+                    }
+                )
             }
         }).catch((error: any) => {
             if (error?.response?.status === 400) {
@@ -128,6 +165,27 @@ export default function TransferPage() {
                 })
             } else {
                 console.error(error);
+                notifications.show({
+                    title: 'Error',
+                    message: 'Transfer eșuat',
+                    color: 'red',
+                    withBorder: true,
+                    styles: (theme) => ({
+                        root: {
+                            backgroundColor: theme.colors.red[6],
+                            borderColor: theme.colors.red[6],
+
+                            '&::before': { backgroundColor: theme.white },
+                        },
+
+                        title: { color: theme.white },
+                        description: { color: theme.white },
+                        closeButton: {
+                            color: theme.white,
+                            '&:hover': { backgroundColor: theme.colors.blue[7] },
+                        },
+                    }),
+                });
             }
         })
     }
@@ -142,7 +200,7 @@ export default function TransferPage() {
                         <h1>Plată nouă</h1>
                         <form noValidate onSubmit={form.onSubmit(handleSubmit)}>
                             <Select
-                                data={cards}
+                                data={cards.map((card: any) => ({ label: card.iban, value: card.iban }) )}
                                 label="Cont curent"
                                 placeholder="Selectează contul curent"
                                 value={selectedCard}
