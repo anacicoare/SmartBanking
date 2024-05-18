@@ -10,18 +10,8 @@ class Transfer(models.Model):
     details = models.CharField(max_length=255)
     sender = models.CharField(max_length=255)
     receiver = models.CharField(max_length=255)
-    iban_sender = models.CharField(max_length=34, validators=[RegexValidator(
-        regex=r'^[A-Z]{2}\d{2}[A-Z\d]{1,30}$',
-        message='IBAN must be in valid format.',
-        code='invalid_iban'
-    )
-    ])
-    iban = models.CharField(max_length=34, validators=[RegexValidator(
-        regex=r'^[A-Z]{2}\d{2}[A-Z\d]{1,30}$',
-        message='IBAN must be in valid format.',
-        code='invalid_iban'
-    )
-    ])
+    iban_sender = models.CharField(max_length=34)
+    iban = models.CharField(max_length=34)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
