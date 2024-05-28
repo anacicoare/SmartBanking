@@ -29,5 +29,6 @@ urlpatterns = [
     path('api/transfer/', views.TransferView.as_view(), name='transfer'),
     path('api/add_card/', views.AddCard.as_view(), name='add_card'),
     path('api/my_cards/', views.MyCards.as_view(), name='add_card'),
+    path('api/reports/', views.Reports.as_view(), name='reports'),
 ]
 
