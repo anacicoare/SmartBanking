@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from proj_backend.serializers import MyTokenObtainPairSerializer, UserSerializer, CardSerializer
 
-from proj_backend.models import Card, Transfer, UserData
+from proj_backend.models import Card, Transfer, UserData, Loan
 
 
 class Test(APIView):
@@ -133,6 +133,22 @@ class MyCards(APIView):
         else:
             return Response(data={"error": "Email parameter is missing"}, status=400)
 
+
+class LoanView(APIView):
+    def post(self, request):
+        amount = request.data.get('amount')
+        details = request.data.get('details')
+        user = request.data.get('user')
+        iban = request.data.get('iban')
+
+        card = Card.objects.get(iban=iban)
+        card.balance += float(amount)
+        card.save()
+
+        loan = Loan(amount=amount, details=details, user=user, iban=iban)
+        loan.save()
+
+        return Response(data={"loaned successfully"}, status=200)
 
 class Reports(APIView):
     def get(self, request):
