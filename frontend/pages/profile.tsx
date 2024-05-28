@@ -4,6 +4,7 @@ import { Card, Text, Button, Group, Avatar } from '@mantine/core';
 import bg from '../public/startpage_bg.jpg';
 import { ProfileServices } from '@/services/profile/profile';
 import { ProfileContext } from '@/contexts/ProfileContext';
+import router from 'next/router';
 
 export default function ProfilePage() {
     const [userData, setUserData] = useState<any>(null);
@@ -64,7 +65,7 @@ export default function ProfilePage() {
                     </Group>
 
                     <div className="flex justify-end mt-4">
-                        <Button variant="filled" color={'indigo.4'}>
+                        <Button variant="filled" color={'indigo.4'} onClick={() => {router.push('/dashboard')}}>
                             Confirm
                         </Button>
                     </div>
