@@ -44,7 +44,12 @@ export const ProfileProvider = ({ children }: any) => {
             setAuthorized(false)
         } else {
             //Case have accessToken
-            decodedData = jwtDecode(profile);
+            try {
+                decodedData = jwtDecode(profile);
+            } catch (error: any) {
+                console.error("Invalid token data");
+            }
+
             if (decodedData && decodedData.email) {
                 setProfile({
                     email: decodedData.email,
