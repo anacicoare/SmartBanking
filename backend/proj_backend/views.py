@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from proj_backend.serializers import MyTokenObtainPairSerializer, UserSerializer, CardSerializer
 
-from proj_backend.models import Card, Transfer, UserData
+from proj_backend.models import Card, Transfer, UserData, Loan
 
 
 class Test(APIView):
@@ -44,18 +44,21 @@ class TransferView(APIView):
         iban = request.data.get('iban')
         iban_sender = request.data.get('iban_sender')
 
+        # print amount, details, sender, receiver, iban, iban_sender
+        print(amount, details, sender, receiver, iban, iban_sender)
+
         # check if sender has enough money
         sender_card = Card.objects.get(iban=iban_sender)
-        if sender_card.balance < amount:
+        if sender_card.balance < float(amount):
             return Response(data={"insufficient balance"}, status=403)
 
         # transfer money
-        sender_card.balance -= amount
+        sender_card.balance -= float(amount)
         sender_card.save()
 
         # update receiver balance
         receiver_card = Card.objects.get(iban=iban)
-        receiver_card.balance += amount
+        receiver_card.balance += float(amount)
         receiver_card.save()
 
         # save transfer

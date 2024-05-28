@@ -38,22 +38,27 @@ export const ProfileProvider = ({ children }: any) => {
      */
     const getUserProfile = () => {
         const profile: any = localStorage.getItem('profile');
-
-        const decodedData = jwtDecode(profile);
-
+        let decodedData = {} as any;
         //Case not authenticated
         if (!profile) {
             setAuthorized(false)
         } else {
             //Case have accessToken
-            setProfile({
-                email: decodedData?.email,
-                name: decodedData?.name,
-                user_type: decodedData?.user_type,
-            })
-
-            //Case logged in
-            setAuthorized(true);
+            decodedData = jwtDecode(profile);
+            if (decodedData && decodedData.email) {
+                setProfile({
+                    email: decodedData.email,
+                    name: decodedData.name,
+                    user_type: decodedData.user_type,
+                });
+                setAuthorized(true);
+                console.log("decodedData", decodedData);
+            } else {
+                // Handle case where decoded data is not as expected
+                setAuthorized(false);
+                setProfile({});
+                console.error("Invalid token data");
+            }
         }
     }
 
@@ -64,7 +69,10 @@ export const ProfileProvider = ({ children }: any) => {
             if (response && response?.data) {
                 const dataResponse = response?.data;
                 //If the authentication succeeds, update the state with the user's profile
-                const decodedData = jwtDecode(dataResponse?.access);
+                let decodedData = {} as any;
+                if(dataResponse?.access) {
+                    decodedData = jwtDecode(dataResponse?.access);
+                }
                 setProfile({
                     email: decodedData?.email,
                     name: decodedData?.name,
