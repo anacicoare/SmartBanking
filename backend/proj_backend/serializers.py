@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from proj_backend.models import UserData, Card
+from proj_backend.models import UserData, Card, Loan
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -36,3 +36,8 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
         fields = ["id", "name", "card_number", "iban", "expiration_date", "cvv", "balance", "is_blocked", "type"]
+        
+class LoanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Loan
+        fields = ["id", "amount", "details", "user", "iban", "date"]

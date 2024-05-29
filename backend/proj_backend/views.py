@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from proj_backend.serializers import MyTokenObtainPairSerializer, UserSerializer, CardSerializer
+from proj_backend.serializers import LoanSerializer, MyTokenObtainPairSerializer, UserSerializer, CardSerializer
 
 from proj_backend.models import Card, Transfer, UserData, Loan
 
@@ -203,3 +203,27 @@ class UpdateIbanBalance(APIView):
         card.balance = balance
         card.save()
         return Response(data={"balance updated successfully"}, status=200)
+    
+class UpdateLoan(APIView):
+    def put(self, request):
+        id = request.data.get('id')
+        amount = float(request.data.get('amount'))
+        loan = Loan.objects.get(id=id)
+        loan.amount = str(max(float(loan.amount) - float(amount), 0))
+        
+        loan.save()
+        
+        email = request.GET.get('email')
+        name = UserData.objects.get(email=email).name
+        loans = Loan.objects.filter(user=name)
+        loans_data = [LoanSerializer(loan).data for loan in loans]
+        return Response(data={"loans": loans_data}, status=200)
+    
+class GetAllLoans(APIView):
+    def get(self, request):
+        email = request.GET.get('email')
+        print(email)
+        user = UserData.objects.get(email=email)
+        loans = Loan.objects.filter(user=user.name, amount__gt=0)
+        loans_data = [LoanSerializer(loan).data for loan in loans]
+        return Response(data={"loans": loans_data}, status=200)

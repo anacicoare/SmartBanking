@@ -35,5 +35,7 @@ urlpatterns = [
     path('api/update_user/', views.UpdateUser.as_view(), name='update_user'),
     path('api/get_user_cards/', views.GetUserCards.as_view(), name='get_user_cards'),
     path('api/update_iban_balance/', views.UpdateIbanBalance.as_view(), name='update_iban_balance'),
+    path('api/update_loan/', views.UpdateLoan.as_view(), name='update_loan'),
+    path('api/get_all_loans/', views.GetAllLoans.as_view(), name='get_all_loans'),
 ]
 

@@ -13,6 +13,8 @@ import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
 import { AdminServices } from '@/services/admin/AdminServices';
 import { CardServices } from '@/services/cards/cardservices';
+import AddLoanButton from '../addLoanButton/AddLoanButton';
+import UpdateLoanButton from '../updateLoan/UpdateLoanButton';
 
 // Configure CSV export with custom headers
 const csvConfig = mkConfig({
@@ -138,13 +140,23 @@ const Example = (props: any) => {
         },
         {
             accessorKey: 'actions',
-            header: 'Actions',
+            header: 'Acțiuni',
             size: 120,
             Cell: ({ row }: { row: MRT_Row<any> }) => (
             <Button onClick={() => handleUpdate(row.original)}>
                 <IconEdit />
-                <Text className='ml-2'>Edit</Text>
             </Button>
+            ),
+        },
+         {
+            accessorKey: 'loans',
+            header: 'Împrumuturi',
+            size: 120,
+             Cell: ({ row }: { row: MRT_Row<any> }) => (
+                <div className='flex flex-col'>
+                     <AddLoanButton name={row?.original?.name} />
+                     <UpdateLoanButton email={row?.original?.email} />
+                </div>
             ),
         },
     ];
