@@ -1,12 +1,13 @@
 import random
 from datetime import datetime, timedelta
 
+from django.db.models import Q
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from proj_backend.serializers import MyTokenObtainPairSerializer, UserSerializer, CardSerializer
+from proj_backend.serializers import LoanSerializer, MyTokenObtainPairSerializer, UserSerializer, CardSerializer
 
 from proj_backend.models import Card, Transfer, UserData, Loan
 
@@ -110,7 +111,6 @@ class AddCard(APIView):
         is_blocked = False
 
         type = request.data.get('type')
-
         card = Card(name=name, card_number=card_number, iban=iban, expiration_date=expiration_date, cvv=cvv, balance=balance, is_blocked=is_blocked, type=type)
         card.save()
 
@@ -159,3 +159,99 @@ class MyProfile(APIView):
                 return Response(data={"error": "User not found"}, status=404)
         else:
             return Response(data={"error": "Email parameter is missing"}, status=400)
+
+
+
+class LoanView(APIView):
+    def post(self, request):
+        amount = request.data.get('amount')
+        details = request.data.get('details')
+        user = request.data.get('user')
+        iban = request.data.get('iban')
+
+        card = Card.objects.get(iban=iban)
+        card.balance += float(amount)
+        card.save()
+
+        loan = Loan(amount=amount, details=details, user=user, iban=iban)
+        loan.save()
+
+        return Response(data={"loaned successfully"}, status=200)
+
+class Reports(APIView):
+    def get(self, request):
+        email = request.GET.get('email')
+        if not email:
+            return Response(data={"error": "Email parameter is missing"}, status=400)
+
+        try:
+            user = UserData.objects.get(email=email)
+            # Filter transfers where the sender or the receiver email matches the provided email
+            transfers = Transfer.objects.all().filter(Q(sender=user.name) | Q(receiver=user.name))
+            if not transfers.exists():
+                return Response(data={"error": "No transfers found"}, status=404)
+
+            # Retrieve the amount, receiver, and date of each transfer
+            data = [{"amount": transfer.amount, "sender": transfer.sender, "receiver": transfer.receiver, "date": transfer.date} for transfer in transfers]
+            return Response(data=data, status=200)
+        except Exception as e:
+            return Response(data={"error": str(e)}, status=500)
+class AllUsers(APIView):
+    def get(self, request):
+        users = UserData.objects.all()
+        users_data = [UserSerializer(user).data for user in users if user.type == 'normal']
+        return Response(data={"users": users_data}, status=200)
+    
+class UpdateUser(APIView):
+    def put(self, request):
+        email = request.data.get('email')
+        user = UserData.objects.get(email=email)
+        user.name = request.data.get('name')
+        user.email = request.data.get('email')
+        user.address = request.data.get('address')
+        user.phone = request.data.get('phone')
+        user.save()
+        
+        users = UserData.objects.all()
+        users_data = [UserSerializer(user).data for user in users if user.type == 'normal']
+        return Response(data={"users": users_data}, status=200)
+    
+class GetUserCards(APIView):
+    def get(self, request):
+        email = request.GET.get('email')
+        user = UserData.objects.get(email=email)
+        cards = [CardSerializer(card).data for card in user.cards.all()]
+        return Response(data={"cards": cards}, status=200)
+    
+class UpdateIbanBalance(APIView):
+    def put(self, request):
+        iban = request.data.get('iban')
+        balance = request.data.get('balance')
+        card = Card.objects.get(iban=iban)
+        card.balance = balance
+        card.save()
+        return Response(data={"balance updated successfully"}, status=200)
+    
+class UpdateLoan(APIView):
+    def put(self, request):
+        id = request.data.get('id')
+        amount = float(request.data.get('amount'))
+        loan = Loan.objects.get(id=id)
+        loan.amount = str(max(float(loan.amount) - float(amount), 0))
+        
+        loan.save()
+        
+        email = request.GET.get('email')
+        name = UserData.objects.get(email=email).name
+        loans = Loan.objects.filter(user=name)
+        loans_data = [LoanSerializer(loan).data for loan in loans]
+        return Response(data={"loans": loans_data}, status=200)
+    
+class GetAllLoans(APIView):
+    def get(self, request):
+        email = request.GET.get('email')
+        print(email)
+        user = UserData.objects.get(email=email)
+        loans = Loan.objects.filter(user=user.name, amount__gt=0)
+        loans_data = [LoanSerializer(loan).data for loan in loans]
+        return Response(data={"loans": loans_data}, status=200)
