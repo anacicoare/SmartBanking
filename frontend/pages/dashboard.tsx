@@ -9,6 +9,7 @@ import {useForm} from "@mantine/form";
 import Link from "next/link";
 import {CardServices} from "@/services/cards/cardservices";
 import {ProfileContext} from "@/contexts/ProfileContext";
+import { LoansServices } from '@/services/loans/loans';
 
 // Hook
 function useWindowSize() {
@@ -52,6 +53,7 @@ export default function DashboardPage() {
     const [cards, setCards] = useState<any>([]);
     const [selectedCardDetails, setSelectedCardDetails] = useState<any>({});
     const [totalAmount, setTotalAmount] = useState(0);
+    const [loans, setLoans] = useState<any>([]);
 
     const handleSubmit = (values: any) => {
         CardServices.callApiCreateCard({name: values?.name, type: selectedCardType, email: profile?.profile?.email}).then((response: any) => {
@@ -109,6 +111,24 @@ export default function DashboardPage() {
                 }
             }).catch((error: any) => {
                 console.error(error);
+            });
+        }
+    }, [profile?.profile?.email]);
+
+
+    useEffect(() => {
+        if (profile?.profile?.email) {
+            LoansServices.getAllLoans(profile?.profile?.email).then((response: any) => {
+                if (response.status === 200) {
+                    console.log("response", response.data);
+                    setLoans(response?.data?.loans);
+                } else {
+                    console.error(response);
+                }
+            }).catch((error: any) => {
+                if (error?.response?.status === 400) {
+                    console.error(error?.response?.data);
+                }
             });
         }
     }, [profile?.profile?.email]);
@@ -284,6 +304,17 @@ export default function DashboardPage() {
                                             <Text className={'font-semibold'}>IBAN: </Text>
                                             <Text className={'ml-2'}> {selectedCardDetails?.iban}</Text>
                                         </div>
+
+                                                <Text className='font-semibold mt-4' size={'lg'}>Credite</Text>
+                                        {
+                                            loans.filter((loan: any) => loan?.iban === selectedCardDetails?.iban).map((loan: any) => { 
+                                                return <div key={loan?.id} className={'flex flex-row'}>
+                                                    <Text className={'font-semibold'}>{loan?.details}: </Text>
+                                                    <Text className={'ml-2'}> {loan?.amount} RON</Text>
+                                                </div>
+                                            })
+                                                
+                                        }
 
                                     </Card>
                                 </div>
