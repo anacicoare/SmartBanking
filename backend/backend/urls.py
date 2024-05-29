@@ -31,5 +31,11 @@ urlpatterns = [
     path('api/my_cards/', views.MyCards.as_view(), name='add_card'),
     path('api/loan/', views.LoanView.as_view(), name='loans'),
     path('api/reports/', views.Reports.as_view(), name='reports'),
+    path('api/all_users/', views.AllUsers.as_view(), name='all_users'),
+    path('api/update_user/', views.UpdateUser.as_view(), name='update_user'),
+    path('api/get_user_cards/', views.GetUserCards.as_view(), name='get_user_cards'),
+    path('api/update_iban_balance/', views.UpdateIbanBalance.as_view(), name='update_iban_balance'),
+    path('api/update_loan/', views.UpdateLoan.as_view(), name='update_loan'),
+    path('api/get_all_loans/', views.GetAllLoans.as_view(), name='get_all_loans'),
 ]
 

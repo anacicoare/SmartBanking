@@ -6,13 +6,14 @@ import colors from "tailwindcss/colors";
 import Image from "next/image";
 import {usePathname, useRouter} from "next/navigation";
 import {useContext} from "react";
-import {ProductsServices} from "@/services/products/products";
+import { ProfileContext } from "@/contexts/ProfileContext";
 
 export default function NewSidebar() {
     const [active, setActive] = useState(0);
     const router = useRouter();
     const pathname = usePathname();
     const [products, setProducts] = useState([]);
+    const {logout} = useContext(ProfileContext);
     
     return (
         <div className='bg-white flex-col h-screen w-[15%] p-2 shadow-xl'>
@@ -83,33 +84,12 @@ export default function NewSidebar() {
                 />
                 {active == 2 && <div className='bg-blue-900 w-0.5'></div>}
             </div>
-
-            <div className='flex flex-row mt-[100px]'>
-                <NavLink
-                    onClick={() => setActive(3)}
-                    active={active === 3}
-                    label='Settings'
-                    icon={<IconSettings/>}
-                    color='indigo.8'
-                    styles={(theme) => {
-                        return {
-                            label: {
-                                color: colors.black,
-                                fontSize: '1rem',
-                                fontWeight: active === 3 && '600'
-                            }
-                        }
-                    }}
-                />
-                {active == 3 && <div className=' bg-blue-900 w-0.5'></div>}
-            </div>
-
+            
             <NavLink
                 label='Log out'
                 icon={<IconLogout2/>}
                 onClick={() => {
-                    localStorage.removeItem('profile');
-                    router.push('/login');
+                    logout();
                 }}
             />
         </div>

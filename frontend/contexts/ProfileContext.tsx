@@ -58,6 +58,10 @@ export const ProfileProvider = ({ children }: any) => {
                 });
                 setAuthorized(true);
                 console.log("decodedData", decodedData);
+
+                if(decodedData?.type === 'admin') {
+                    router.push('/admin');
+                }
             } else {
                 // Handle case where decoded data is not as expected
                 setAuthorized(false);
@@ -88,6 +92,8 @@ export const ProfileProvider = ({ children }: any) => {
 
                 if(decodedData?.type === 'normal') {
                     router.push('/dashboard');
+                } else {
+                    router.push('/admin');
                 }
 
                 console.log("decodedData", decodedData);
@@ -177,10 +183,16 @@ export const ProfileProvider = ({ children }: any) => {
         setAuthorized(false);
         setProfile({});
         //Remove accessToken and refreshToken from localStorage/Cookies
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('profile');
         Cookies.remove('refreshToken');
+
+        setProfile({
+            email: "",
+            name: "",
+            user_type: "",
+        })
         //Redirect to login page
-        router.push(`/start/dashboard`)
+        router.push(`/`)
     };
     
     return (
