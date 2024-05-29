@@ -64,7 +64,7 @@ export default function LoginPage() {
     });
 
     const handleSubmit = (values: any) => {
-        register({ email: values?.email, password: values?.password, type: selectedUserType, name: values?.name })
+        register({ email: values?.email, password: values?.password, user_type: selectedUserType, name: values?.name })
     }
 
     return (
