@@ -29,7 +29,7 @@ export default function Header() {
                            router.push('/login')
                        }}>Intră în cont</Button>}
               {profile?.profile?.email ?  <Text className={`${pathname.includes('dashboard') ? 'text-white' : 'text-black'} font-semibold ml-2 mt-3`}> {profile?.profile?.name} </Text> :
-                  <Button variant={'filled'} color={'gray.1'} radius={'xl'} size={'sm'} className={'text-black -mr-16'} onClick={() => {router.push('/register')}}>Înregistrează-te acum</Button>}
+                  <Button variant={'filled'} color={'gray.1'} radius={'xl'} size={'sm'} className={'text-black -mr-16 mt-3.5'} onClick={() => {router.push('/register')}}>Înregistrează-te acum</Button>}
           </div>
       </div>
           <Divider color={'white'} size={'sm'} className={'ml-10 mr-10'}/>

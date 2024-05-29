@@ -29,5 +29,9 @@ urlpatterns = [
     path('api/transfer/', views.TransferView.as_view(), name='transfer'),
     path('api/add_card/', views.AddCard.as_view(), name='add_card'),
     path('api/my_cards/', views.MyCards.as_view(), name='add_card'),
+    path('api/all_users/', views.AllUsers.as_view(), name='all_users'),
+    path('api/update_user/', views.UpdateUser.as_view(), name='update_user'),
+    path('api/get_user_cards/', views.GetUserCards.as_view(), name='get_user_cards'),
+    path('api/update_iban_balance/', views.UpdateIbanBalance.as_view(), name='update_iban_balance'),
 ]
 

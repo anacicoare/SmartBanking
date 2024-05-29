@@ -68,6 +68,8 @@ class UserData(AbstractUser):
     is_superuser = models.BooleanField(default=False)
     type = models.CharField(max_length=100, default='normal')
     cards = models.ManyToManyField(Card)
+    address = models.CharField(max_length=255, blank=True)
+    phone = models.CharField(max_length=20, blank=True)
 
     groups = models.ManyToManyField(
         Group,

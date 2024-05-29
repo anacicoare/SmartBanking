@@ -132,3 +132,39 @@ class MyCards(APIView):
                 return Response(data={"error": "User not found"}, status=404)
         else:
             return Response(data={"error": "Email parameter is missing"}, status=400)
+
+class AllUsers(APIView):
+    def get(self, request):
+        users = UserData.objects.all()
+        users_data = [UserSerializer(user).data for user in users if user.type == 'normal']
+        return Response(data={"users": users_data}, status=200)
+    
+class UpdateUser(APIView):
+    def put(self, request):
+        email = request.data.get('email')
+        user = UserData.objects.get(email=email)
+        user.name = request.data.get('name')
+        user.email = request.data.get('email')
+        user.address = request.data.get('address')
+        user.phone = request.data.get('phone')
+        user.save()
+        
+        users = UserData.objects.all()
+        users_data = [UserSerializer(user).data for user in users if user.type == 'normal']
+        return Response(data={"users": users_data}, status=200)
+    
+class GetUserCards(APIView):
+    def get(self, request):
+        email = request.GET.get('email')
+        user = UserData.objects.get(email=email)
+        cards = [CardSerializer(card).data for card in user.cards.all()]
+        return Response(data={"cards": cards}, status=200)
+    
+class UpdateIbanBalance(APIView):
+    def put(self, request):
+        iban = request.data.get('iban')
+        balance = request.data.get('balance')
+        card = Card.objects.get(iban=iban)
+        card.balance = balance
+        card.save()
+        return Response(data={"balance updated successfully"}, status=200)
