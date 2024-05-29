@@ -26,7 +26,7 @@ import select = Simulate.select;
 
 const userTypes = [
     {value: 'normal', label: 'Persoană fizică'},
-    {value: 'admin', label: 'Persoană juridică'},
+    {value: 'adminn', label: 'Persoană juridică'},
 ]
 
 export default function LoginPage() {
@@ -64,7 +64,7 @@ export default function LoginPage() {
     });
 
     const handleSubmit = (values: any) => {
-        register({ email: values?.email, password: values?.password, type: selectedUserType, name: values?.name })
+        register({ email: values?.email, password: values?.password, user_type: selectedUserType, name: values?.name })
     }
 
     return (
