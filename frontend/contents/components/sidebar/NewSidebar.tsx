@@ -65,8 +65,10 @@ export default function NewSidebar() {
             </div>
             <div className='flex flex-row'>
                 <NavLink
-                    onClick={() => setActive(2)}
-                    active={active === 2}
+                    onClick={() => {
+                        router?.push('/reports');
+                    }}
+                    active={pathname.includes('reports')}
                     label="Rapoarte"
                     icon={<IconCategory/>}
                     color='indigo.8'

@@ -1,6 +1,7 @@
 import random
 from datetime import datetime, timedelta
 
+from django.db.models import Q
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,7 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from proj_backend.serializers import MyTokenObtainPairSerializer, UserSerializer, CardSerializer
 
-from proj_backend.models import Card, Transfer, UserData
+from proj_backend.models import Card, Transfer, UserData, Loan
 
 
 class Test(APIView):
@@ -104,7 +105,6 @@ class AddCard(APIView):
         is_blocked = False
 
         type = request.data.get('type')
-
         card = Card(name=name, card_number=card_number, iban=iban, expiration_date=expiration_date, cvv=cvv, balance=balance, is_blocked=is_blocked, type=type)
         card.save()
 
@@ -133,6 +133,41 @@ class MyCards(APIView):
         else:
             return Response(data={"error": "Email parameter is missing"}, status=400)
 
+
+class LoanView(APIView):
+    def post(self, request):
+        amount = request.data.get('amount')
+        details = request.data.get('details')
+        user = request.data.get('user')
+        iban = request.data.get('iban')
+
+        card = Card.objects.get(iban=iban)
+        card.balance += float(amount)
+        card.save()
+
+        loan = Loan(amount=amount, details=details, user=user, iban=iban)
+        loan.save()
+
+        return Response(data={"loaned successfully"}, status=200)
+
+class Reports(APIView):
+    def get(self, request):
+        email = request.GET.get('email')
+        if not email:
+            return Response(data={"error": "Email parameter is missing"}, status=400)
+
+        try:
+            user = UserData.objects.get(email=email)
+            # Filter transfers where the sender or the receiver email matches the provided email
+            transfers = Transfer.objects.all().filter(Q(sender=user.name) | Q(receiver=user.name))
+            if not transfers.exists():
+                return Response(data={"error": "No transfers found"}, status=404)
+
+            # Retrieve the amount, receiver, and date of each transfer
+            data = [{"amount": transfer.amount, "sender": transfer.sender, "receiver": transfer.receiver, "date": transfer.date} for transfer in transfers]
+            return Response(data=data, status=200)
+        except Exception as e:
+            return Response(data={"error": str(e)}, status=500)
 class AllUsers(APIView):
     def get(self, request):
         users = UserData.objects.all()

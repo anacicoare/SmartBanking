@@ -192,63 +192,69 @@ export default function TransferPage() {
 
     return (
         <React.Fragment>
-            <Layout />
-            <div className='absolute left-[18%] top-[7%] mt-7 w-[82%]'>
-            <Container className="form-container" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Box className='w-1/2 position-absolutess m-5'>
-                    <Card withBorder shadow="xl" p={20} mt={30} radius="md">
-                        <h1>Plată nouă</h1>
-                        <form noValidate onSubmit={form.onSubmit(handleSubmit)}>
-                            <Select
-                                data={cards.map((card: any) => ({ label: card.iban, value: card.iban }) )}
-                                label="Cont curent"
-                                placeholder="Selectează contul curent"
-                                value={selectedCard}
-                                onChange={(value: any) => setSelectedCard(value)}
-                                mt="md"
-                                required={true}
-                            />
-                            <TextInput
-                                autoFocus
-                                name='receiver'
-                                label="Beneficiar"
-                                placeholder="Introduce numele beneficiarului"
-                                required {...form.getInputProps('receiver')}
-                                className={'mt-3'}
-                            />
-                            <TextInput
-                                mt={'md'}
-                                name='iban'
-                                label="IBAN beneficiar"
-                                placeholder="Introduce IBAN-ul beneficiarului"
-                                required {...form.getInputProps('iban')}
-                            />
-                            <TextInput
-                                autoFocus
-                                name='amount'
-                                label="Sumă"
-                                placeholder="0 RON"
-                                required {...form.getInputProps('amount')}
-                                className={'mt-3'}
-                            />
-                            <TextInput
-                                mt={'md'}
-                                name='details'
-                                label="Detalii plată"
-                                placeholder="Transfer"
-                                required {...form.getInputProps('details')}
-                            />
-                            <Button variant="filled" color={'indigo.4'} type='submit' fullWidth mt="xl">
-                                Continuă
-                            </Button>
-                        </form>
-                    </Card>
-                </Box>
-                {/* Add image */}
-                <Image className={"m-10 mt-15"} src={'/transfer_bani.svg'} alt={'transfer'} style={{ width: "45%"}} />
-            </Container>
+            <div
+                className="h-1/2 w-full bg-cover bg-center"
+                style={{backgroundImage: 'url("startpage_bg.jpg")'}}>
+                <Layout/>
+                <div className='absolute left-[18%] top-[7%] mt-7 w-[82%]'>
+                    <Container className="form-container"
+                               style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <Box className='w-1/2 position-absolutess m-5'>
+                            <Card withBorder shadow="xl" p={20} mt={30} radius="md">
+                                <h1>Plată nouă</h1>
+                                <form noValidate onSubmit={form.onSubmit(handleSubmit)}>
+                                    <Select
+                                        data={cards.map((card: any) => ({label: card.iban, value: card.iban}))}
+                                        label="Cont curent"
+                                        placeholder="Selectează contul curent"
+                                        value={selectedCard}
+                                        onChange={(value: any) => setSelectedCard(value)}
+                                        mt="md"
+                                        required={true}
+                                    />
+                                    <TextInput
+                                        autoFocus
+                                        name='receiver'
+                                        label="Beneficiar"
+                                        placeholder="Introduce numele beneficiarului"
+                                        required {...form.getInputProps('receiver')}
+                                        className={'mt-3'}
+                                    />
+                                    <TextInput
+                                        mt={'md'}
+                                        name='iban'
+                                        label="IBAN beneficiar"
+                                        placeholder="Introduce IBAN-ul beneficiarului"
+                                        required {...form.getInputProps('iban')}
+                                    />
+                                    <TextInput
+                                        autoFocus
+                                        name='amount'
+                                        label="Sumă"
+                                        placeholder="0 RON"
+                                        required {...form.getInputProps('amount')}
+                                        className={'mt-3'}
+                                    />
+                                    <TextInput
+                                        mt={'md'}
+                                        name='details'
+                                        label="Detalii plată"
+                                        placeholder="Transfer"
+                                        required {...form.getInputProps('details')}
+                                    />
+                                    <Button variant="filled" color={'indigo.4'} type='submit' fullWidth mt="xl">
+                                        Continuă
+                                    </Button>
+                                </form>
+                            </Card>
+                        </Box>
+                        {/* Add image */}
+                        <Image className={"m-10 mt-15"} src={'/transfer_bani.svg'} alt={'transfer'}
+                               style={{width: "45%"}}/>
+                    </Container>
+                </div>
             </div>
-            {/*</Layout>*/}
+                {/*</Layout>*/}
         </React.Fragment>
-    );
+);
 }

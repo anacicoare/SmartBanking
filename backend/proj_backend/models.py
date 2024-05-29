@@ -32,6 +32,15 @@ class Card(models.Model):
         return self.card_number
     
 
+class Loan(models.Model):
+    amount = models.FloatField()
+    details = models.CharField(max_length=255)
+    user = models.CharField(max_length=255)
+    iban = models.CharField(max_length=34)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} : {self.amount}'
 
 
 class UserManager(BaseUserManager):
