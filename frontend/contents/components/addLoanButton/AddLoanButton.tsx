@@ -50,7 +50,6 @@ export default function AddLoanButton(props: any) {
                 console.log("response", response);
                 notifications.show({title: 'Success', message: 'Loan added successfully', color: 'teal'})
                 close();
-                router.push('/loan')
             } else {
                 console.error(response);
             }
