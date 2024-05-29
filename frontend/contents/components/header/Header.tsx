@@ -1,4 +1,4 @@
-import {Avatar, Button, Card, Divider, Text} from "@mantine/core";
+import {Avatar, Button, Card, Divider, Text, UnstyledButton} from "@mantine/core";
 import React, {useContext, useEffect} from "react";
 import {useRouter} from "next/router";
 import {ProfileContext} from "@/contexts/ProfileContext";
@@ -24,11 +24,12 @@ export default function Header() {
                   <h2 className={'text-white font-semibold ml-10 mt-3'}>Smartbanking</h2>}
           </div>
           <div className={'flex flex-row'}>
-              {profile?.profile?.email ?  <Avatar radius="xl"  className={'text-black mt-1'}/> : <Button variant={'outline'} color={'gray.1'} radius={'xl'} size={'sm'} className={'mt-4 mr-3'}
+              {profile?.profile?.email ?   
+              <UnstyledButton onClick={() => {router.push('/profile')}}><Avatar radius="xl"  className={'text-black mt-1'}/> </UnstyledButton>: <Button variant={'outline'} color={'gray.1'} radius={'xl'} size={'sm'} className={'mt-4 mr-3'}
                        onClick={() => {
                            router.push('/login')
                        }}>Intră în cont</Button>}
-              {profile?.profile?.email ?  <Text className={`${pathname.includes('dashboard') ? 'text-white' : 'text-black'} font-semibold ml-2 mt-3`}> {profile?.profile?.name} </Text> :
+              {profile?.profile?.email ?  <Text className={`text-white font-semibold ml-2 mt-5`}> {profile?.profile?.name} </Text> :
                   <Button variant={'filled'} color={'gray.1'} radius={'xl'} size={'sm'} className={'text-black -mr-16 mt-3.5'} onClick={() => {router.push('/register')}}>Înregistrează-te acum</Button>}
           </div>
       </div>

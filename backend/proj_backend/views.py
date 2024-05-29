@@ -23,6 +23,12 @@ class RegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    
+class ProfileView(APIView):
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -132,6 +138,28 @@ class MyCards(APIView):
                 return Response(data={"error": "User not found"}, status=404)
         else:
             return Response(data={"error": "Email parameter is missing"}, status=400)
+        
+class MyProfile(APIView):
+    def get(self, request):
+        email = request.GET.get('email')
+        if email:
+            try:
+                # Retrieve user data based on the provided email
+                user = UserData.objects.get(email=email)
+                
+                # Prepare the response data
+                user_data = {
+                    "name": user.name,
+                    "email": user.email,
+                    "is_admin": user.is_admin
+                }
+                
+                return Response(data=user_data, status=200)
+            except UserData.DoesNotExist:
+                return Response(data={"error": "User not found"}, status=404)
+        else:
+            return Response(data={"error": "Email parameter is missing"}, status=400)
+
 
 
 class LoanView(APIView):

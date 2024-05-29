@@ -84,7 +84,7 @@ export default function UpdateLoanButton(props: any) {
                 className={'mt-3.5'}
                 onClick={open}
             >
-                Depune sold
+                Achită rată
             </Button>
             <Modal opened={opened} onClose={close} centered title={email}>
                 <Card className="-mt-10" p={20} radius="md">
