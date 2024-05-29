@@ -7,6 +7,14 @@ import Table from "@/contents/components/table/Table";
 import { ProfileContext } from "@/contexts/ProfileContext";
 import { ReportServices } from "@/services/reports/reportServices";
 
+function formatDateToYYYYMMDD(dateString: string): string {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export default function ReportsPage() {
     const router = useRouter();
     const profile = useContext(ProfileContext);
@@ -75,7 +83,13 @@ export default function ReportsPage() {
                                 {loading ? (
                                     <Text>Loading...</Text>
                                 ) : (
-                                    <Table data={reports}/>
+                                        <Table data={reports.map((report: any) => {
+                                            return {
+                                                date: formatDateToYYYYMMDD(report.date),
+                                                receiver: report.receiver,
+                                                amount: report.amount,
+                                            };
+                                    })}/>
                                 )}
                             </Card>
                         </Box>

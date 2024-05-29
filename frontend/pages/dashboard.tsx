@@ -280,6 +280,10 @@ export default function DashboardPage() {
                                             <Text className={'font-semibold'}>Tip: </Text>
                                             <Text className={'ml-2'}> {selectedCardDetails?.type}</Text>
                                         </div>
+                                        <div className={'flex flex-row'}>
+                                            <Text className={'font-semibold'}>IBAN: </Text>
+                                            <Text className={'ml-2'}> {selectedCardDetails?.iban}</Text>
+                                        </div>
 
                                     </Card>
                                 </div>
